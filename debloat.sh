@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-# Tier 1: Hisense ACR (Screen Spying), Telemetry, VIDAA Adware, Store/Hotel Mode & Regional Bloat (31 packages)
+# Tier 1: Hisense ACR (Screen Spying), Telemetry, VIDAA Adware, Store/Hotel Mode & Regional Bloat (30 packages)
 CORE_BLOAT_PACKAGES=(
   # 1. Hisense ACR (Automatic Content Recognition), Telemetry & Log Uploaders
   "com.vt.tv.evservice"                     # Vtp_ACR: ACRService screen-fingerprinting & viewing habit tracker
@@ -29,7 +29,6 @@ CORE_BLOAT_PACKAGES=(
   "com.vt.tv.interactive"                   # Interactive: ATSC broadcast interactive popup/ad service
   "tv.mopa.ginga"                           # MopaGinga: Brazilian/South American DTV interactive middleware
   "com.hisense.odinbrowser"                 # Vtp_OdinBrowser: Built-in Hisense Odin web browser
-  "com.vt.eula"                             # Hisense EULA data-collection agreement prompt
   "com.vt.fte"                              # First-time setup wizard stub
   "com.vt.tv.protector"                     # DeviceAssistant: Hisense RAM/cache "cleaner" bloatware
   "com.vt.tv.customerlauncher"              # CustomerLauncher: Unused secondary OEM launcher stub
@@ -46,7 +45,7 @@ CORE_BLOAT_PACKAGES=(
   "com.android.providers.contacts"          # Android contacts storage provider
 )
 
-# Tier 2: Preinstalled Streaming Apps & Unused Built-in Media/Tuner Apps (15 packages)
+# Tier 2: Preinstalled Streaming Apps & Unused Built-in Media Apps (12 packages)
 STREAMING_AND_MEDIA_PACKAGES=(
   # Preinstalled Commercial Streaming Apps
   "com.netflix.ninja"                       # Netflix app
@@ -61,10 +60,7 @@ STREAMING_AND_MEDIA_PACKAGES=(
   "com.google.android.videos"               # Google Play Movies & TV
   "com.google.android.play.games"           # Google Play Games
 
-  # Built-in Coax Live TV, USB Media Center & BT Speaker App
-  "com.vt.tv.tvcenter"                      # LiveTVMainActivity: Built-in coax/OTA Live TV app (89 MB RAM)
-  "com.vt.tvplayer"                         # TvPlayer: Background OTA TV player service (47 MB RAM)
-  "com.vt.source.tuner"                     # TunerTvInput: Coax antenna tuner service (52 MB RAM; does NOT affect HDMI)
+  # Built-in USB Media Center & BT Speaker App
   "com.vt.tv.mediacenter"                   # MediaCenter: Built-in USB thumb-drive file browser
   "com.vt.tv.singlelisten"                  # MyMusic: "BT Music" phone-to-TV speaker app (does NOT affect BT remotes/headphones)
 )

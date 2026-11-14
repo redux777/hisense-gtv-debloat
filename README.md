@@ -4,7 +4,7 @@ A dependency-free ADB debloater and performance optimizer for **Hisense Google T
 
 Out of the box, Hisense Google TVs run over **1.1 GB of background OEM telemetry, ACR screen-spying, VIDAA ad services, and preinstalled streaming daemons** on a system with only **2.43 GB of total physical RAM**—causing heavy lag, app reloads, and 6+ GB of cached ad bloat on `/data`.
 
-`debloat.sh` removes up to **51 non-essential bloatware and spyware packages** (`pm uninstall -k --user 0`), optionally swaps the ad-heavy stock Google TV home screen (`launcherx`) for **[Projectivy Launcher](https://github.com/spocky/miproja1)**, sets `0.5x` UI animation scales, trims `/data` caches, and restarts `AtvRemoteService` so both the **Google Home app remote** and **Home Assistant** work without interruption.
+`debloat.sh` removes up to **47 non-essential bloatware and spyware packages** (`pm uninstall -k --user 0`), optionally swaps the ad-heavy stock Google TV home screen (`launcherx`) for **[Projectivy Launcher](https://github.com/spocky/miproja1)**, sets `0.5x` UI animation scales, trims `/data` caches, and restarts `AtvRemoteService` so both the **Google Home app remote** and **Home Assistant** work without interruption.
 
 ---
 
@@ -40,7 +40,7 @@ chmod +x debloat.sh
 ### Other Usage Modes
 
 ```bash
-# Remove all 51 bloatware packages without replacing the stock Google TV launcher:
+# Remove all 47 bloatware packages without replacing the stock Google TV launcher:
 ./debloat.sh -s 192.168.1.104:5555
 
 # Only remove Tier 1 Hisense ACR spyware, telemetry & VIDAA bloat (keep Netflix, YouTube, Live TV, Google Assistant & AirPlay):
@@ -60,7 +60,7 @@ chmod +x debloat.sh
 
 ## Package Reference
 
-### Tier 1: Hisense ACR (Screen Spying), Telemetry, VIDAA Adware & System Bloat (`31` Packages)
+### Tier 1: Hisense ACR (Screen Spying), Telemetry, VIDAA Adware & System Bloat (`30` Packages)
 *(Always removed)*
 
 | Package Name | APK Path | RAM / Impact | Description |
@@ -83,7 +83,6 @@ chmod +x debloat.sh
 | `com.vt.tv.interactive` | `/system_ext/priv-app/Interactive` | `40 MB` | ATSC broadcast interactive popup/ad overlay service. |
 | `tv.mopa.ginga` | `/product/app/MopaGinga` | — | Brazilian/South American DTV interactive broadcast middleware (`Ginga`). |
 | `com.hisense.odinbrowser` | `/system_ext/app/Vtp_OdinBrowser` | — | Built-in Hisense Odin web browser. |
-| `com.vt.eula` | `/system_ext/app/*` | — | Hisense EULA data-collection agreement prompt. |
 | `com.vt.fte` | `/system_ext/app/*` | — | First-time setup wizard stub. |
 | `com.vt.tv.protector` | `/system_ext/app/DeviceAssistant` | — | Hisense "Device Assistant / RAM Cleaner" bloatware with usage-tracking permissions. |
 | `com.vt.tv.customerlauncher` | `/system_ext/app/CustomerLauncher` | — | Unused secondary OEM launcher stub. |
@@ -99,7 +98,7 @@ chmod +x debloat.sh
 
 ---
 
-### Tier 2: Preinstalled Streaming Apps & Built-in Coax/USB Apps (`15` Packages)
+### Tier 2: Preinstalled Streaming Apps & Built-in USB/Media Apps (`12` Packages)
 *(Removed by default; kept if you pass `--keep-streaming` or `--core-only`)*
 
 | Package Name | RAM / Impact | Description |
@@ -115,9 +114,6 @@ chmod +x debloat.sh
 | `com.roku.web.trc` | — | The Roku Channel. |
 | `com.google.android.videos` | — | Google Play Movies & TV. |
 | `com.google.android.play.games` | — | Google Play Games. |
-| `com.vt.tv.tvcenter` | `89 MB` | **Live TV (`LiveTVMainActivity`)**: Built-in coax/OTA TV app and launcher icon. |
-| `com.vt.tvplayer` | `47 MB` | Background OTA TV player service. |
-| `com.vt.source.tuner` | `52 MB` | Coax antenna tuner input service *(does **not** affect HDMI 1–4)*. |
 | `com.vt.tv.mediacenter` | — | **USB Media Center**: Hisense USB thumb-drive file browser. |
 | `com.vt.tv.singlelisten` | — | **BT Music**: Turns the TV into a Bluetooth speaker for a phone *(does **not** affect Bluetooth remotes or headphones)*. |
 
@@ -138,10 +134,35 @@ chmod +x debloat.sh
 
 ### Core TV Packages Intentionally Preserved (Never Removed)
 
-The following packages are essential to TV hardware, picture calibration, HDMI, audio, screensaver, and smart-home control and are **never** touched by `debloat.sh`:
+The following packages are essential to TV hardware, picture calibration, HDMI input routing, video surface renegotiation, audio, screensaver, and smart-home control and are **never** touched by `debloat.sh`:
 - **Hardware & Picture Calibration**: `com.vt.tvservice`, `com.vt.avmiddleware`, `com.vt.tv.videocolor`, `com.vt.tv.aipq`, `com.vt.tv.calmanconnector`, `com.vt.roomcalibration` *(Preserves Local Dimming, SDR/HDR10/Dolby Vision picture modes, 20-point white balance, CMS, and motion controls)*
-- **HDMI Inputs, CEC & Quick Menu OSD**: `com.vt.source.external`, `com.vt.tv.input`, `com.vt.tv.commonui` *(Preserves HDMI 1–4, eARC, CEC, VRR/144Hz Game Mode, and the physical Menu/Input button OSD)*
+- **HDMI Inputs, TIF Video Pipeline & OSD**: `com.vt.tv.tvcenter`, `com.vt.tvplayer`, `com.vt.source.tuner`, `com.vt.source.external`, `com.vt.tv.input`, `com.vt.tv.commonui`, `com.vt.eula` *(Load-bearing for Android TV Input Framework (`TIF`). Preserves HDMI 1–4 video plane binding, remote input switcher menu, eARC, CEC, ALLM/VRR/144Hz Game Mode renegotiation, and prevents screen blackouts when opening console overlays like the Xbox Guide)*
 - **Audio**: `com.dolby.android.audio.service` *(Dolby Atmos / Dolby Audio processing and eARC passthrough)*
 - **Google Photos Screensaver (Ambient Mode)**: `com.google.android.apps.tv.dreamx` *(Backdrop / Google Photos slideshow screensaver)*
 - **Chromecast & Remote Control**: `com.google.android.apps.mediashell` *(Chromecast Built-in)* and `com.google.android.tv.remote.service` *(Google Home app virtual remote + Home Assistant `androidtv_remote` integration)*
 - **Firmware Updates**: `com.vt.tv.ota`, `com.vt.remoteupgrade`, `com.vt.tv.usbota`
+
+---
+
+## Troubleshooting & Tips
+
+### Remote Input Switcher & Xbox Guide Black Screen
+- **Symptom**: Pressing the physical Input button brings up the menu, but selecting inputs does nothing. In Xbox/consoles, pressing the Xbox button or opening the guide causes the screen to go black until reboot.
+- **Cause**: Hisense MediaTek firmware routes all TV Input Framework (`TIF`) video surfaces through `com.vt.tv.tvcenter` and `com.vt.tvplayer`. If either is uninstalled, the remote input switcher cannot bind the hardware video plane, and dynamic refresh rate/ALLM mode switches (triggered by the Xbox Guide) cause the hardware video pipeline to drop the surface and hang (`EGL_BAD_SURFACE`).
+- **Fix**: These packages are permanently preserved in `debloat.sh`. If you previously ran an older debloat script, restore them via:
+  ```bash
+  adb shell "cmd package install-existing com.vt.tv.tvcenter"
+  adb shell "cmd package install-existing com.vt.tvplayer"
+  adb shell "cmd package install-existing com.vt.source.tuner"
+  adb shell "cmd package install-existing com.vt.eula"
+  adb reboot
+  ```
+
+### Google Photos Screensaver (Ambient Mode) Album Selection
+- **Symptom**: Ambient Mode works and displays art gallery / internet photos, but clicking "Google Photos" on the TV to pick specific albums does not work or fails to open.
+- **Cause**: The on-device album picker dialog relies on Google TV launcher components (`launcherx` / `setupwraith`), which are disabled when using Projectivy Launcher (`--projectivy`).
+- **Solution**: Configure your Google Photos albums using the **Google Home mobile app** on your phone (iOS or Android):
+  1. Open the **Google Home app** on your phone.
+  2. Tap your TV device → **Settings** (gear icon) → **Ambient mode**.
+  3. Select **Google Photos** and choose the albums you want displayed.
+  4. Ambient Mode (`dreamx`) syncs your album selection directly from your Google cloud profile without needing `launcherx` active on the TV.
